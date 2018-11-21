@@ -1,9 +1,16 @@
 package com.example.administrator.playandroid;
 
+import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -27,12 +34,19 @@ import butterknife.BindView;
  */
 
 public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
+
+    @BindView(R.id.tl_custom)
+    Toolbar tl_custom;
+    @BindView(R.id.mDrawerLayout)
+    DrawerLayout mDrawerLayout;
+
+
     @BindView(R.id.bottom_navigation_bar)
     BottomNavigationBar mBottomNavigationBar;
 
     @BindView(R.id.fl_fragment)
     FrameLayout fl_fragment;
-
+    private ActionBarDrawerToggle mDrawerToggle;
     private List<BaseFragment> mFragments = new ArrayList<>();
 
     @Override
@@ -45,8 +59,34 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         initBottomNavigation();
         initFragment();
         setDefaultFragment();
+        tl_custom.setTitle("WanAndroid");
+        tl_custom.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
+        setSupportActionBar(tl_custom);
+        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mDrawerToggle=new ActionBarDrawerToggle(this,mDrawerLayout,tl_custom,R.string.open,R.string.open){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+        mDrawerToggle.syncState();//该方法会自动和actionBar关联, 将开关的图片显示在了action上，如果不设置，也可以有抽屉的效果，不过是默认的图标
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
     private void setDefaultFragment() {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
