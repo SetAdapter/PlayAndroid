@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">PlayAndroid</string>
+
+    <!--首页-->
+    <string name="home">首页</string>
+    <string name="knowledge">知识体系</string>
+    <string name="publicNumber">公众号</string>
+    <string name="navigation">导航</string>
+    <string name="project">项目</string>
+</resources>
