@@ -67,7 +67,7 @@ public abstract class DataObserver<T> extends BaseDataObserver<T> {
 
     @Override
     public void doOnNext(BaseBean<T> data) {
-        onSuccess(data.getRows());
+        onSuccess(data.getData());
         //可以根据需求对code统一处理
 //        switch (data.getCode()) {
 //            case 200:

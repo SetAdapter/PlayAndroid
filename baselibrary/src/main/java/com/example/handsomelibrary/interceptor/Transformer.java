@@ -41,9 +41,9 @@ public class Transformer {
                     @Override
                     public ObservableSource<T> apply(@NonNull BaseBean<T> tBaseBean) throws Exception {
                         if (tBaseBean.isSuccess()) {
-                            return createData(tBaseBean.getRows());
+                            return createData(tBaseBean.getData());
                         } else {
-                            return Observable.error(new ApiException(tBaseBean.getMsg(), tBaseBean.getCode()));
+                            return Observable.error(new ApiException(tBaseBean.getErrorMsg(), tBaseBean.getErrorCode()));
                         }
                     }
                 }).subscribeOn(Schedulers.io())

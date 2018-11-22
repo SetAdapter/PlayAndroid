@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
@@ -13,7 +15,13 @@ import com.example.administrator.playandroid.R;
 import com.example.administrator.playandroid.adapter.HomeAdapter;
 import com.example.administrator.playandroid.interfacer.FabScrollListener;
 import com.example.administrator.playandroid.interfacer.HideScrollListener;
+import com.example.handsomelibrary.api.ApiService;
 import com.example.handsomelibrary.base.BaseFragment;
+import com.example.handsomelibrary.interceptor.Transformer;
+import com.example.handsomelibrary.model.ArticleListBean;
+import com.example.handsomelibrary.model.BaseBean;
+import com.example.handsomelibrary.retrofit.RxHttpUtils;
+import com.example.handsomelibrary.retrofit.observer.CommonObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,13 +65,22 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void setRv() {
-        setData();
+        getArticleList();
         tl_custom = mContext.findViewById(R.id.tl_custom);
         bottombar = mContext.findViewById(R.id.bottom_navigation_bar);
         rv_main.setLayoutManager(new LinearLayoutManager(mContext));
-        adapter = new HomeAdapter(list);
+        adapter = new HomeAdapter(new ArrayList<ArticleListBean.DatasBean>());
         rv_main.setAdapter(adapter);
         // rv_main.addOnScrollListener(new FabScrollListener(this));
+        setRvScroll();
+
+        //添加头部
+        View view = LayoutInflater.from(mContext).inflate(R.layout.home_banner, null);
+        adapter.addHeaderView(view);
+    }
+
+    //RecyclerView 滑动监听
+    private void setRvScroll() {
         rv_main.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int mScrollThreshold;
 
@@ -112,12 +129,25 @@ public class HomeFragment extends BaseFragment {
         bottombar.animate().translationY(tl_custom.getHeight()).setInterpolator(new AccelerateInterpolator(3));
     }
 
-    List list = new ArrayList();
+    //网络请求首页文章列表
+    private void getArticleList() {
+        RxHttpUtils.createApi(ApiService.class)
+                .getArticleList()
+                .compose(Transformer.<ArticleListBean>switchSchedulers())
+                .subscribe(new CommonObserver<ArticleListBean>() {
+                    @Override
+                    protected void onSuccess(ArticleListBean listBean) {
+                        if(listBean!=null){
+                            List<ArticleListBean.DatasBean> datas = listBean.getDatas();
+                            adapter.setNewData(datas);
+                        }
+                    }
 
-    private void setData() {
-        for (int i = 0; i < 20; i++) {
-            list.add("");
-        }
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+                });
     }
 
 //    @Override

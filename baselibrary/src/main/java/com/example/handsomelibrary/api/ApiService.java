@@ -3,8 +3,11 @@ package com.example.handsomelibrary.api;
 
 import android.util.ArrayMap;
 
+import com.example.handsomelibrary.model.ArticleListBean;
 import com.example.handsomelibrary.model.BaseBean;
 import com.example.handsomelibrary.model.LoginBean;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -21,10 +24,20 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    String BASE_URL = "http://116.196.95.169/";
+    String BASE_URL = "http://www.wanandroid.com/";
     //    String BASE_URL = "http://192.168.100.251:8089/";
     String BASE_PIC_URL = "http://116.196.95.169/file/getImages?imageurl=";
 //    String BASE_PIC_URL = "http://192.168.100.251:8089/file/getImages?imageurl=";
+
+    /**
+    * 1.1 首页文章列表
+    *
+    */
+    @GET("article/list/1/json")
+    Observable<BaseBean<ArticleListBean>> getArticleList();
+
+
+
 
 
 

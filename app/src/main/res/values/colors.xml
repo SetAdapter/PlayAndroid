@@ -6,5 +6,7 @@
     
     <!--首页-->
     <color name="homeMain">#e91c63</color>
+    <!--标签-->
+    <color name="label">#01bcd4</color>
 
 </resources>

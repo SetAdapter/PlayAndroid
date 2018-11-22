@@ -39,4 +39,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //主页底部Tab
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
+    //首页 banner
+    implementation 'com.bigkoo:convenientbanner:2.0.5'
 }
