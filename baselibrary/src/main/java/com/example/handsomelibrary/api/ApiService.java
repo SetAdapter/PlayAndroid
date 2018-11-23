@@ -4,6 +4,7 @@ package com.example.handsomelibrary.api;
 import android.util.ArrayMap;
 
 import com.example.handsomelibrary.model.ArticleListBean;
+import com.example.handsomelibrary.model.BannerBean;
 import com.example.handsomelibrary.model.BaseBean;
 import com.example.handsomelibrary.model.LoginBean;
 
@@ -15,6 +16,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -30,16 +32,16 @@ public interface ApiService {
 //    String BASE_PIC_URL = "http://192.168.100.251:8089/file/getImages?imageurl=";
 
     /**
-    * 1.1 首页文章列表
-    *
-    */
-    @GET("article/list/1/json")
-    Observable<BaseBean<ArticleListBean>> getArticleList();
+     * 1.1 首页文章列表
+     */
+    @GET("article/list/{id}/json")
+    Observable<BaseBean<ArticleListBean>> getArticleList(@Path("id") int id);
 
-
-
-
-
+    /**
+     * 1.2 首页banner
+     */
+    @GET("banner/json")
+    Observable<BaseBean<List<BannerBean>>> getBanner();
 
 
     /**

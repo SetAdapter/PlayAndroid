@@ -1,27 +1,39 @@
 package com.example.administrator.playandroid.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.playandroid.R;
 import com.example.administrator.playandroid.adapter.HomeAdapter;
-import com.example.administrator.playandroid.interfacer.FabScrollListener;
-import com.example.administrator.playandroid.interfacer.HideScrollListener;
+import com.example.administrator.playandroid.view.LocalImageHolderView;
+import com.example.administrator.playandroid.view.NetworkImageHolderView;
 import com.example.handsomelibrary.api.ApiService;
 import com.example.handsomelibrary.base.BaseFragment;
 import com.example.handsomelibrary.interceptor.Transformer;
 import com.example.handsomelibrary.model.ArticleListBean;
-import com.example.handsomelibrary.model.BaseBean;
+import com.example.handsomelibrary.model.BannerBean;
 import com.example.handsomelibrary.retrofit.RxHttpUtils;
 import com.example.handsomelibrary.retrofit.observer.CommonObserver;
+import com.example.handsomelibrary.utils.T;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +44,21 @@ import butterknife.BindView;
  * 首页
  * Created by Stefan on 2018/11/21.
  */
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListener {
     @BindView(R.id.rv_main)
     RecyclerView rv_main;
+
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
     private static final String HOME_FRAGMENT = "home";
 
     HomeAdapter adapter;
     private Toolbar tl_custom;
-    private BottomNavigationBar bottombar;
+    private BottomNavigationBar bottomBar;
+    int mPageNo = 0;
+    private ConvenientBanner bannerView;
+    private View headerView;
+    private TextView tv_bannerText;
 
     public static HomeFragment newInstance(String parmas) {
         Bundle bundle = new Bundle();
@@ -65,9 +84,12 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void setRv() {
-        getArticleList();
+        //首页banner数据
+        getBanner();
+        //列表数据
+        getArticleList(mPageNo);
         tl_custom = mContext.findViewById(R.id.tl_custom);
-        bottombar = mContext.findViewById(R.id.bottom_navigation_bar);
+        bottomBar = mContext.findViewById(R.id.bottom_navigation_bar);
         rv_main.setLayoutManager(new LinearLayoutManager(mContext));
         adapter = new HomeAdapter(new ArrayList<ArticleListBean.DatasBean>());
         rv_main.setAdapter(adapter);
@@ -75,8 +97,74 @@ public class HomeFragment extends BaseFragment {
         setRvScroll();
 
         //添加头部
-        View view = LayoutInflater.from(mContext).inflate(R.layout.home_banner, null);
-        adapter.addHeaderView(view);
+        headerView = LayoutInflater.from(mContext).inflate(R.layout.home_banner, null);
+        bannerView = headerView.findViewById(R.id.convenientBanner);
+        adapter.addHeaderView(headerView);
+        refreshLayout.setOnRefreshLoadMoreListener(this);//监听刷新
+
+        adapter.setOnItemChildClickListener((adapter, view, position) -> {
+
+            ImageView iv_collection = view.findViewById(R.id.iv_collection);
+            switch (view.getId()) {
+                case R.id.iv_collection:
+                    if(isClick){
+                        iv_collection.setImageResource(R.drawable.svg_collection);
+                        isClick=false;
+                    }else {
+                        iv_collection.setImageResource(R.drawable.svg_collection_y);
+                        isClick=true;
+                    }
+                    break;
+            }
+        });
+
+    }
+    boolean isClick;
+    //网络请求Banner数据
+    private void getBanner() {
+        RxHttpUtils.createApi(ApiService.class)
+                .getBanner()
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<List<BannerBean>>() {
+                    @Override
+                    protected void onSuccess(List<BannerBean> t) {
+//                        if (bannerBeans != null) {
+//                            for (BannerBean Bean : t) {
+//                                bannerBeans.add(Bean.getImagePath());
+//                            }
+                        setBannerView(t);
+//                        }
+                    }
+
+                    @Override
+                    protected void onError(String errorMsg) {
+
+                    }
+                });
+
+    }
+
+    // List<String> bannerBeans = new ArrayList<>();
+
+    private void setBannerView(List<BannerBean> bannerBean) {
+        bannerView.setPages(() -> new NetworkImageHolderView(), bannerBean)
+                //设置指示器是否可见
+                //.setPointViewVisible(true)
+                //设置自动切换（同时设置了切换时间间隔）
+                .startTurning(2000)
+                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+                .setPageIndicator(new int[]{R.drawable.svg_indicator_n, R.drawable.svg_indicator})
+                //设置指示器的方向（左、中、右）
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
+                //设置点击监听事件
+                .setOnItemClickListener(position -> {
+                    // todo 点击 轮播图跳转到指定界面
+
+                })
+                //设置手动影响（设置了该项无法手动切换）
+                .setManualPageable(true);
+
+
     }
 
     //RecyclerView 滑动监听
@@ -102,10 +190,6 @@ public class HomeFragment extends BaseFragment {
                 super.onScrollStateChanged(recyclerView, newState);
 
             }
-
-            public void setScrollThreshold(int scrollThreshold) {
-                mScrollThreshold = scrollThreshold;
-            }
         });
     }
 
@@ -116,7 +200,7 @@ public class HomeFragment extends BaseFragment {
         //下滑时要执行的代码
         //隐藏上下状态栏
         tl_custom.animate().translationY(0).setInterpolator(new DecelerateInterpolator(3));
-        bottombar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(3));
+        bottomBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(3));
     }
 
     /**
@@ -126,28 +210,72 @@ public class HomeFragment extends BaseFragment {
         //上滑时要执行的代码 imageView.setVisibility(View.VISIBLE);
         //显示上下状态栏
         tl_custom.animate().translationY(-tl_custom.getHeight()).setInterpolator(new AccelerateInterpolator(3));
-        bottombar.animate().translationY(tl_custom.getHeight()).setInterpolator(new AccelerateInterpolator(3));
+        bottomBar.animate().translationY(tl_custom.getHeight()).setInterpolator(new AccelerateInterpolator(3));
     }
 
+
     //网络请求首页文章列表
-    private void getArticleList() {
+    private void getArticleList(int mPageNo) {
         RxHttpUtils.createApi(ApiService.class)
-                .getArticleList()
+                .getArticleList(mPageNo)
                 .compose(Transformer.<ArticleListBean>switchSchedulers())
                 .subscribe(new CommonObserver<ArticleListBean>() {
                     @Override
                     protected void onSuccess(ArticleListBean listBean) {
-                        if(listBean!=null){
+                        if (listBean != null) {
                             List<ArticleListBean.DatasBean> datas = listBean.getDatas();
-                            adapter.setNewData(datas);
+//                            //正在刷新
+                            if (refreshLayout.getState() == RefreshState.Refreshing) {
+                                adapter.setNewData(datas);
+                                refreshLayout.finishRefresh();
+                            }//正在加载
+                            else if (refreshLayout.getState() == RefreshState.Loading) {
+                                adapter.getData().addAll(datas);
+                                refreshLayout.finishLoadMore();
+                                adapter.notifyDataSetChanged();
+                            } else {
+                                adapter.setNewData(datas);
+                            }
+                        } else {
+                            if (refreshLayout.getState() == RefreshState.Refreshing) {
+                                refreshLayout.finishRefresh();
+                            } else if (refreshLayout.getState() == RefreshState.Loading) {
+                                refreshLayout.finishLoadMore();
+                            }
                         }
                     }
 
                     @Override
                     protected void onError(String errorMsg) {
-
+                        T.showShort(errorMsg);
                     }
                 });
+    }
+
+    /**
+     * 分页加载数据
+     */
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        mPageNo += 1;
+        getArticleList(mPageNo);
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        mPageNo = 0;
+        getArticleList(mPageNo);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (refreshLayout.getState() == RefreshState.Refreshing) {
+            refreshLayout.finishRefresh();
+        }
+        if (refreshLayout.getState() == RefreshState.Loading) {
+            refreshLayout.finishLoadMore();
+        }
     }
 
 //    @Override

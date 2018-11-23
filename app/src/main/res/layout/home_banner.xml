@@ -8,19 +8,7 @@
     <com.bigkoo.convenientbanner.ConvenientBanner
         android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:layout_marginTop="6dp"
-        android:padding="@dimen/dp_10"
+        android:layout_height="200dp"
         app:canLoop="true" />
-
-    <TextView
-        android:id="@+id/tv_bannerText"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/banner_bottom_text"
-        android:gravity="center_vertical"
-        android:padding="12dp"
-        android:text="aaa" />
 
 </RelativeLayout>

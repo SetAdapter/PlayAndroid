@@ -59,8 +59,8 @@ dependencies {
     // add library
 //    api 'org.greenrobot:greendao-generator:3.2.2'
     //下拉刷新上拉加载
-    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
-    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'//没有使用特殊Header，可以不加这行
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-15'
+    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-15'//没有使用特殊Header，可以不加这行
     //Glide
     api 'com.github.bumptech.glide:glide:3.7.0'
     //baseRecyclerViewAdapterHelper
