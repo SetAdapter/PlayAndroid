@@ -10,4 +10,7 @@
 
     <string name="open">打开</string>
     <string name="close">关闭</string>
+
+    <!-- WebView string 资源 -->
+    <string name="web_error">抱歉~\n加载失败,点击重新加载</string>
 </resources>

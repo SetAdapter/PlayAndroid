@@ -1,8 +1,6 @@
 package com.example.administrator.playandroid.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,11 +14,9 @@ import android.widget.TextView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.playandroid.R;
+import com.example.administrator.playandroid.activity.WebViewActivity;
 import com.example.administrator.playandroid.adapter.HomeAdapter;
-import com.example.administrator.playandroid.view.LocalImageHolderView;
 import com.example.administrator.playandroid.view.NetworkImageHolderView;
 import com.example.handsomelibrary.api.ApiService;
 import com.example.handsomelibrary.base.BaseFragment;
@@ -52,13 +48,14 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
     SmartRefreshLayout refreshLayout;
     private static final String HOME_FRAGMENT = "home";
 
-    HomeAdapter adapter;
+    HomeAdapter mAdapter;
     private Toolbar tl_custom;
     private BottomNavigationBar bottomBar;
     int mPageNo = 0;
     private ConvenientBanner bannerView;
     private View headerView;
     private TextView tv_bannerText;
+    private List<ArticleListBean.DatasBean> datas;
 
     public static HomeFragment newInstance(String parmas) {
         Bundle bundle = new Bundle();
@@ -91,35 +88,43 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
         tl_custom = mContext.findViewById(R.id.tl_custom);
         bottomBar = mContext.findViewById(R.id.bottom_navigation_bar);
         rv_main.setLayoutManager(new LinearLayoutManager(mContext));
-        adapter = new HomeAdapter(new ArrayList<ArticleListBean.DatasBean>());
-        rv_main.setAdapter(adapter);
+        mAdapter = new HomeAdapter(new ArrayList<ArticleListBean.DatasBean>());
+        rv_main.setAdapter(mAdapter);
         // rv_main.addOnScrollListener(new FabScrollListener(this));
         setRvScroll();
 
         //添加头部
         headerView = LayoutInflater.from(mContext).inflate(R.layout.home_banner, null);
         bannerView = headerView.findViewById(R.id.convenientBanner);
-        adapter.addHeaderView(headerView);
+        mAdapter.addHeaderView(headerView);
         refreshLayout.setOnRefreshLoadMoreListener(this);//监听刷新
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            List<ArticleListBean.DatasBean> data = mAdapter.getData();
+            if (data.size() != 0 && datas != null) {
+                WebViewActivity.startWebActivity(mContext, data.get(position).getLink());
+            }
+        });
 
-        adapter.setOnItemChildClickListener((adapter, view, position) -> {
+
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
 
             ImageView iv_collection = view.findViewById(R.id.iv_collection);
             switch (view.getId()) {
                 case R.id.iv_collection:
-                    if(isClick){
+                    if (isClick) {
                         iv_collection.setImageResource(R.drawable.svg_collection);
-                        isClick=false;
-                    }else {
+                        isClick = false;
+                    } else {
                         iv_collection.setImageResource(R.drawable.svg_collection_y);
-                        isClick=true;
+                        isClick = true;
                     }
                     break;
             }
         });
-
     }
+
     boolean isClick;
+
     //网络请求Banner数据
     private void getBanner() {
         RxHttpUtils.createApi(ApiService.class)
@@ -223,18 +228,18 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
                     @Override
                     protected void onSuccess(ArticleListBean listBean) {
                         if (listBean != null) {
-                            List<ArticleListBean.DatasBean> datas = listBean.getDatas();
+                            datas = listBean.getDatas();
 //                            //正在刷新
                             if (refreshLayout.getState() == RefreshState.Refreshing) {
-                                adapter.setNewData(datas);
+                                mAdapter.setNewData(datas);
                                 refreshLayout.finishRefresh();
                             }//正在加载
                             else if (refreshLayout.getState() == RefreshState.Loading) {
-                                adapter.getData().addAll(datas);
+                                mAdapter.getData().addAll(datas);
                                 refreshLayout.finishLoadMore();
-                                adapter.notifyDataSetChanged();
+                                mAdapter.notifyDataSetChanged();
                             } else {
-                                adapter.setNewData(datas);
+                                mAdapter.setNewData(datas);
                             }
                         } else {
                             if (refreshLayout.getState() == RefreshState.Refreshing) {
