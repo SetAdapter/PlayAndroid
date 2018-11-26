@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * WanAndroid 首页
@@ -40,6 +42,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     DrawerLayout mDrawerLayout;
     @BindView(R.id.bottom_navigation_bar)
     BottomNavigationBar mBottomNavigationBar;
+    @BindView(R.id.tv_collection)
+    TextView tv_collection;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private List<BaseFragment> mFragments = new ArrayList<>();
@@ -58,7 +62,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         tl_custom.setTitleTextColor(Color.parseColor("#ffffff")); //设置标题颜色
         setSupportActionBar(tl_custom);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mDrawerToggle=new ActionBarDrawerToggle(this,mDrawerLayout,tl_custom,R.string.open,R.string.open){
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -87,6 +91,27 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             }
         });
 
+    }
+
+    @OnClick({R.id.tv_collection,R.id.tv_todo,R.id.tv_nightMode,R.id.tv_setting,R.id.tv_about})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.tv_collection:
+                T.showShort("收藏");
+                break;
+            case R.id.tv_todo:
+                T.showShort("TODO工具");
+                break;
+            case R.id.tv_nightMode:
+                T.showShort("夜间模式");
+                break;
+            case R.id.tv_setting:
+                T.showShort("设置");
+                break;
+            case R.id.tv_about:
+                T.showShort("关于我们");
+                break;
+        }
     }
 
     //添加toolbar右侧 搜索图标
