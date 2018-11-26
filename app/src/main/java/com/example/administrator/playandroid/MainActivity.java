@@ -32,7 +32,6 @@ import butterknife.BindView;
  * WanAndroid 首页
  * Created by Stefan on 2018/11/21 11:10.
  */
-
 public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener{
 
     @BindView(R.id.tl_custom)
