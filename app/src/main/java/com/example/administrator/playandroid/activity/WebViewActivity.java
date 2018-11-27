@@ -26,13 +26,14 @@ import com.example.handsomelibrary.utils.JumpUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 /**
- * WebView 相关内容
+ * WebView 设置相关
+ * Created by Stefan on 2018/11/26 16:45
  */
 
 public class WebViewActivity extends BaseActivity {
 
-    @BindView(R.id.web_view)
-    WebView mWebView;
+    @BindView(R.id.webView)
+    WebView webView;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.showError)
@@ -57,9 +58,9 @@ public class WebViewActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.showError:
-                mWebView.setVisibility(View.VISIBLE);
+                webView.setVisibility(View.VISIBLE);
                 showError.setVisibility(View.GONE);
-                mWebView.reload();
+                webView.reload();
                 break;
             case R.id.iv_back:
                 JumpUtils.exitActivity(mContext);
@@ -78,15 +79,15 @@ public class WebViewActivity extends BaseActivity {
         String url = getIntent().getStringExtra(WEB_URL);
         //加快HTML网页加载完成的速度，等页面finish再加载图片
         if (Build.VERSION.SDK_INT >= 19) {
-            mWebView.getSettings().setLoadsImagesAutomatically(true);
+            webView.getSettings().setLoadsImagesAutomatically(true);
         } else {
-            mWebView.getSettings().setLoadsImagesAutomatically(false);
+            webView.getSettings().setLoadsImagesAutomatically(false);
         }
-        mWebView.setHorizontalScrollBarEnabled(false);//水平不显示
-        mWebView.setVerticalScrollBarEnabled(false); //垂直不显示
-        mWebView.loadUrl(url);
+        webView.setHorizontalScrollBarEnabled(false);//水平不显示
+        webView.setVerticalScrollBarEnabled(false); //垂直不显示
+        webView.loadUrl(url);
         // Enable Javascript
-        WebSettings webSettings = mWebView.getSettings();
+        WebSettings webSettings = webView.getSettings();
         //设置WebView支持javascript脚本
         webSettings.setDomStorageEnabled(true);
         webSettings.setJavaScriptEnabled(true);
@@ -97,11 +98,11 @@ public class WebViewActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             //两者都可以
             webSettings.setMixedContentMode(webSettings.getMixedContentMode());
-            //mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            //webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         // Force links and redirects to open in the WebView instead of in a browser
-        mWebView.setWebViewClient(new WebViewClient());
-        mWebView.setWebChromeClient(new WebChromeClient() {
+        webView.setWebViewClient(new WebViewClient());
+        webView.setWebChromeClient(new WebChromeClient() {
             //用网页的标题来设置自己的标题栏
             @Override
             public void onReceivedTitle(WebView view, String title) {
@@ -123,10 +124,10 @@ public class WebViewActivity extends BaseActivity {
                 }
             }
         });
-        mWebView.setWebViewClient(new WebViewClient() {
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                mWebView.setVisibility(View.GONE);
+                webView.setVisibility(View.GONE);
                // showError.setVisibility(View.VISIBLE);
                 super.onReceivedError(view, request, error);
             }
@@ -145,26 +146,25 @@ public class WebViewActivity extends BaseActivity {
     //销毁WebView
     @Override
     public void onDestroy() {
-        if (mWebView != null) {
-            mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-            mWebView.removeAllViews();
+        if (webView != null) {
+            webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            webView.removeAllViews();
             //在5.1上如果不加上这句话就会出现内存泄露。这是5.1的bug
             // mComponentCallbacks导致的内存泄漏
-            mWebView.setTag(null);
-            mWebView.clearHistory();
-            ((ViewGroup) mWebView.getParent()).removeView(mWebView);
-            mWebView.destroy();
-            mWebView = null;
+            webView.setTag(null);
+            webView.clearHistory();
+            ((ViewGroup) webView.getParent()).removeView(webView);
+            webView.destroy();
+            webView = null;
         }
         super.onDestroy();
     }
 
-
     //改写物理按键——返回的逻辑
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
-            mWebView.goBack();//返回上一页面
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+            webView.goBack();//返回上一页面
             return true;
         }
         return super.onKeyDown(keyCode, event);//退出整个应用程序

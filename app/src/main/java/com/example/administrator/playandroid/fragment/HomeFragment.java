@@ -7,10 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -36,6 +33,9 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.example.administrator.playandroid.MainActivity.onScrollDown;
+import static com.example.administrator.playandroid.MainActivity.onScrollUp;
+
 /**
  * 首页
  * Created by Stefan on 2018/11/21.
@@ -54,7 +54,6 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
     int mPageNo = 0;
     private ConvenientBanner bannerView;
     private View headerView;
-    private TextView tv_bannerText;
     private List<ArticleListBean.DatasBean> datas;
 
     public static HomeFragment newInstance(String parmas) {
@@ -72,7 +71,7 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
 
     @Override
     protected void initData() {
-        setRv();
+        initRv();
         setAnimation();
     }
 
@@ -80,7 +79,7 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
 
     }
 
-    private void setRv() {
+    private void initRv() {
         //首页banner数据
         getBanner();
         //列表数据
@@ -104,7 +103,6 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
                 WebViewActivity.startWebActivity(mContext, data.get(position).getLink());
             }
         });
-
 
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
 
@@ -164,11 +162,9 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
                 //设置点击监听事件
                 .setOnItemClickListener(position -> {
                     // todo 点击 轮播图跳转到指定界面
-
                 })
                 //设置手动影响（设置了该项无法手动切换）
                 .setManualPageable(true);
-
 
     }
 
@@ -196,26 +192,6 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
 
             }
         });
-    }
-
-    /**
-     * 下滑监听
-     */
-    private void onScrollDown() {
-        //下滑时要执行的代码
-        //隐藏上下状态栏
-        tl_custom.animate().translationY(0).setInterpolator(new DecelerateInterpolator(3));
-        bottomBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(3));
-    }
-
-    /**
-     * 上滑监听
-     */
-    private void onScrollUp() {
-        //上滑时要执行的代码 imageView.setVisibility(View.VISIBLE);
-        //显示上下状态栏
-        tl_custom.animate().translationY(-tl_custom.getHeight()).setInterpolator(new AccelerateInterpolator(3));
-        bottomBar.animate().translationY(tl_custom.getHeight()).setInterpolator(new AccelerateInterpolator(3));
     }
 
 

@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -34,14 +36,14 @@ import butterknife.OnClick;
  * WanAndroid 首页
  * Created by Stefan on 2018/11/21 11:10.
  */
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener{
+public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
 
-    @BindView(R.id.tl_custom)
-    Toolbar tl_custom;
+    //  @BindView(R.id.tl_custom)
+    public static Toolbar tl_custom;
     @BindView(R.id.mDrawerLayout)
     DrawerLayout mDrawerLayout;
-    @BindView(R.id.bottom_navigation_bar)
-    BottomNavigationBar mBottomNavigationBar;
+    // @BindView(R.id.bottom_navigation_bar)
+    public static BottomNavigationBar mBottomNavigationBar;
     @BindView(R.id.tv_collection)
     TextView tv_collection;
 
@@ -55,6 +57,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        tl_custom = findViewById(R.id.tl_custom);
+        mBottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
         initBottomNavigation();
         initFragment();
         setDefaultFragment();
@@ -63,7 +67,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         setSupportActionBar(tl_custom);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        mDrawerToggle=new ActionBarDrawerToggle(this,mDrawerLayout,tl_custom,R.string.open,R.string.open){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, tl_custom, R.string.open, R.string.open) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -82,7 +86,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         tl_custom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.action_edit:
                         T.showShort("Search!");
                         break;
@@ -93,9 +97,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     }
 
-    @OnClick({R.id.tv_collection,R.id.tv_todo,R.id.tv_nightMode,R.id.tv_setting,R.id.tv_about})
-    public void onClick(View view){
-        switch (view.getId()){
+    @OnClick({R.id.tv_collection, R.id.tv_todo, R.id.tv_nightMode, R.id.tv_setting, R.id.tv_about})
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.tv_collection:
                 T.showShort("收藏");
                 break;
@@ -119,7 +123,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.main, menu);
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -159,8 +163,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     public void onTabSelected(int position) {
-        if(null!=mFragments){
-            if(position<=mFragments.size()){
+        if (null != mFragments) {
+            if (position <= mFragments.size()) {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 Fragment currentFragment = fm.findFragmentById(R.id.fl_fragment);
@@ -175,18 +179,23 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 }
                 ft.commitAllowingStateLoss();
 
-               switch (position){
-                   case 0: tl_custom.setTitle("WanAndroid");
-                       break;
-                   case 1: tl_custom.setTitle(getString(R.string.knowledge));
-                       break;
-                   case 2:tl_custom.setTitle(getString(R.string.publicNumber));
-                       break;
-                   case 3:tl_custom.setTitle( getString(R.string.navigation));
-                       break;
-                   case 4:tl_custom.setTitle( getString(R.string.project));
-                       break;
-               }
+                switch (position) {
+                    case 0:
+                        tl_custom.setTitle("WanAndroid");
+                        break;
+                    case 1:
+                        tl_custom.setTitle(getString(R.string.knowledge));
+                        break;
+                    case 2:
+                        tl_custom.setTitle(getString(R.string.publicNumber));
+                        break;
+                    case 3:
+                        tl_custom.setTitle(getString(R.string.navigation));
+                        break;
+                    case 4:
+                        tl_custom.setTitle(getString(R.string.project));
+                        break;
+                }
 
 
             }
@@ -210,5 +219,26 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     public void onTabReselected(int position) {
 
     }
+
+    /**
+     * 下滑监听
+     */
+    public static void onScrollDown() {
+        //下滑时要执行的代码
+        //隐藏上下状态栏
+        tl_custom.animate().translationY(0).setInterpolator(new DecelerateInterpolator(3));
+        mBottomNavigationBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(3));
+    }
+
+    /**
+     * 上滑监听
+     */
+    public static void onScrollUp() {
+        //上滑时要执行的代码 imageView.setVisibility(View.VISIBLE);
+        //显示上下状态栏
+        tl_custom.animate().translationY(-tl_custom.getHeight()).setInterpolator(new AccelerateInterpolator(3));
+        mBottomNavigationBar.animate().translationY(tl_custom.getHeight()).setInterpolator(new AccelerateInterpolator(3));
+    }
+
 
 }
