@@ -196,8 +196,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                         tl_custom.setTitle(getString(R.string.project));
                         break;
                 }
-
-
             }
         }
     }

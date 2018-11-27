@@ -49,8 +49,6 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
     private static final String HOME_FRAGMENT = "home";
 
     HomeAdapter mAdapter;
-    private Toolbar tl_custom;
-    private BottomNavigationBar bottomBar;
     int mPageNo = 0;
     private ConvenientBanner bannerView;
     private View headerView;
@@ -84,8 +82,6 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
         getBanner();
         //列表数据
         getArticleList(mPageNo);
-        tl_custom = mContext.findViewById(R.id.tl_custom);
-        bottomBar = mContext.findViewById(R.id.bottom_navigation_bar);
         rv_main.setLayoutManager(new LinearLayoutManager(mContext));
         mAdapter = new HomeAdapter(new ArrayList<ArticleListBean.DatasBean>());
         rv_main.setAdapter(mAdapter);

@@ -1,17 +1,21 @@
 package com.example.administrator.playandroid.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.View;
 
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.playandroid.R;
+import com.example.administrator.playandroid.activity.KnowledgeChildActivity;
 import com.example.administrator.playandroid.adapter.KnowledgeAdapter;
+import com.example.handsomelibrary.api.ApiService;
 import com.example.handsomelibrary.base.BaseFragment;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.example.handsomelibrary.interceptor.Transformer;
+import com.example.handsomelibrary.model.KnowledgeBean;
+import com.example.handsomelibrary.retrofit.RxHttpUtils;
+import com.example.handsomelibrary.retrofit.observer.CommonObserver;
+import com.example.handsomelibrary.utils.JumpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +29,15 @@ import static com.example.administrator.playandroid.MainActivity.onScrollUp;
  * 知识体系
  * Created by Stefan on 2018/11/21.
  */
-public class KnowledgeFragment extends BaseFragment implements OnRefreshLoadMoreListener {
+public class KnowledgeFragment extends BaseFragment{
 
     private static final String HOME_FRAGMENT = "home";
     @BindView(R.id.rv_knowList)
     RecyclerView rv_knowList;
 
-    private Toolbar tl_custom;
-    private BottomNavigationBar bottomBar;
+//    @BindView(R.id.refreshLayout)
+//    SwipeRefreshLayout refreshLayout;
+
     KnowledgeAdapter mAdapter;
 
     public static KnowledgeFragment newInstance(String params) {
@@ -51,21 +56,49 @@ public class KnowledgeFragment extends BaseFragment implements OnRefreshLoadMore
     @Override
     protected void initData() {
         initRv();
+        getKnowledgeTree();
+    }
+
+    /**
+     * 网络请求知识体系数据
+     */
+    private void getKnowledgeTree() {
+        RxHttpUtils.createApi(ApiService.class)
+                .getKnowledgeTree()
+                .compose(Transformer.switchSchedulers())
+                .subscribe(new CommonObserver<List<KnowledgeBean>>() {
+                    @Override
+                    protected void onSuccess(List<KnowledgeBean> knowledgeBeans) {
+                        mAdapter.setNewData(knowledgeBeans);
+                       // refreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    protected void onError(String errorMsg) {
+                       // refreshLayout.setRefreshing(false);
+                    }
+                });
     }
 
     @Override
     protected void initView() {
         super.initView();
-        tl_custom = mContext.findViewById(R.id.tl_custom);
-        bottomBar = mContext.findViewById(R.id.bottom_navigation_bar);
         setRvScroll();
     }
 
     private void initRv() {
-        setList();
         rv_knowList.setLayoutManager(new LinearLayoutManager(mContext));
-        mAdapter = new KnowledgeAdapter(list);
+        mAdapter = new KnowledgeAdapter(new ArrayList<>());
         rv_knowList.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            KnowledgeBean knowledgeBean = mAdapter.getData().get(position);
+            Bundle bundle=new Bundle();
+            bundle.putSerializable("knowledgeBean",knowledgeBean);
+            JumpUtils.jump(mContext,KnowledgeChildActivity.class,bundle);
+        });
+
+        //refreshLayout.setColorSchemeColors(getResources().getColor(R.color.homeMain));
+       // refreshLayout.setOnRefreshListener(this);
     }
 
     //RecyclerView 滑动监听
@@ -94,21 +127,20 @@ public class KnowledgeFragment extends BaseFragment implements OnRefreshLoadMore
         });
     }
 
-    List list = new ArrayList();
-    public void setList() {
+    //刷新列表
+//    @Override
+//    public void onRefresh() {
+//        getKnowledgeTree();
+//    }
 
-        for (int i = 0; i < 10; i++) {
-            list.add("");
-        }
-    }
+    //  List list = new ArrayList();
 
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+//    public void setList() {
+//
+//        for (int i = 0; i < 10; i++) {
+//            list.add("");
+//        }
+//    }
 
-    }
 
-    @Override
-    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
-    }
 }

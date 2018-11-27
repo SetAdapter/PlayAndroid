@@ -6,6 +6,7 @@ import android.util.ArrayMap;
 import com.example.handsomelibrary.model.ArticleListBean;
 import com.example.handsomelibrary.model.BannerBean;
 import com.example.handsomelibrary.model.BaseBean;
+import com.example.handsomelibrary.model.KnowledgeBean;
 import com.example.handsomelibrary.model.LoginBean;
 
 import java.util.List;
@@ -42,6 +43,14 @@ public interface ApiService {
      */
     @GET("banner/json")
     Observable<BaseBean<List<BannerBean>>> getBanner();
+
+    /**
+     * 2.1 体系数据
+     */
+    @GET("tree/json")
+    Observable<BaseBean<List<KnowledgeBean>>> getKnowledgeTree();
+
+
 
 
     /**

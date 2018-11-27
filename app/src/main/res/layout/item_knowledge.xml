@@ -16,17 +16,17 @@
         android:layout_height="wrap_content"
         android:text="开发环境"
         android:textColor="@color/black"
-        android:textSize="@dimen/dp_16" />
+        android:textSize="@dimen/dp_18" />
 
     <TextView
         android:id="@+id/tv_content"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/dp_340"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_title"
         android:layout_marginTop="@dimen/dp_10"
         android:text="主要内容显示"
         android:textColor="@color/txtSecondColor"
-        android:textSize="@dimen/dp_14" />
+        android:textSize="@dimen/dp_16" />
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/iv_right"
