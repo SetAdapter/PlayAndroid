@@ -3,14 +3,16 @@ package com.example.administrator.playandroid.fragment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.playandroid.R;
 import com.example.administrator.playandroid.activity.AttentionEvent;
-import com.example.administrator.playandroid.adapter.KnowledgeChildAdapter;
+import com.example.administrator.playandroid.adapter.PubNumChildAdapter;
 import com.example.handsomelibrary.api.ApiService;
 import com.example.handsomelibrary.base.BaseFragment;
 import com.example.handsomelibrary.interceptor.Transformer;
-import com.example.handsomelibrary.model.KnowledgeChildBean;
+import com.example.handsomelibrary.model.PubNumChildBean;
 import com.example.handsomelibrary.retrofit.RxHttpUtils;
 import com.example.handsomelibrary.retrofit.observer.CommonObserver;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -29,35 +31,35 @@ import butterknife.BindView;
 import static com.example.administrator.playandroid.activity.WebViewActivity.startWebActivity;
 
 /**
- *  知识体系
- * Created by Stefan on 2018/11/27 15:33
+ * 公众号
+ * Created by Stefan on 2018/11/28 14:45
  */
-public class KnowledgeChildFragment extends BaseFragment {
-    @BindView(R.id.rv_knowChildList)
-    RecyclerView rv_knowChildList;
+public class PublicNumberChildFragment extends BaseFragment {
+    @BindView(R.id.rv_pubNumChildList)
+    RecyclerView rv_pubNumChildList;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
-    KnowledgeChildAdapter mAdapter;
-    public static KnowledgeChildFragment fragment;
 
+    PubNumChildAdapter mAdapter;
     int mPage = 0;
-    private int cid;
+    public static PublicNumberChildFragment fragment;
+    private int id;
 
-    public static KnowledgeChildFragment getInstance() {
-        fragment = new KnowledgeChildFragment();
+    public static PublicNumberChildFragment getInstance() {
+        fragment = new PublicNumberChildFragment();
         return fragment;
     }
 
     @Override
     protected int getLayoutID() {
-        return R.layout.fragment_knowledge_child;
+        return R.layout.fragment_public_num_child;
     }
 
     @Override
     protected void initData() {
+        getWxArticleList(408,mPage);
         initRv();
     }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -65,48 +67,44 @@ public class KnowledgeChildFragment extends BaseFragment {
     }
 
     private void initRv() {
-        getKnowledgeChild(mPage, 60);
-        rv_knowChildList.setLayoutManager(new LinearLayoutManager(mContext));
-        mAdapter = new KnowledgeChildAdapter(new ArrayList<>());
-        rv_knowChildList.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            startWebActivity(mContext,mAdapter.getData().get(position).getLink());
-        });
+        rv_pubNumChildList.setLayoutManager(new LinearLayoutManager(mContext));
+        mAdapter = new PubNumChildAdapter(new ArrayList<>());
+        rv_pubNumChildList.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> startWebActivity(mContext,mAdapter.getData().get(position).getLink()));
         //刷新与分页加载
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 mPage += 1;
-                getKnowledgeChild(mPage, cid);
+                getWxArticleList(id, mPage);
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mPage = 0;
-                getKnowledgeChild(mPage, cid);
+                getWxArticleList(id, mPage);
             }
         });
     }
 
-    //网络请求知识体系 二级数据
-    public void getKnowledgeChild(int page, int cid) {
+    private void getWxArticleList(int id, int page) {
         RxHttpUtils.createApi(ApiService.class)
-                .getKnowledgeChild(page, cid)
+                .getWxArticleList(id, page)
                 .compose(Transformer.switchSchedulers())
-                .subscribe(new CommonObserver<KnowledgeChildBean>() {
+                .subscribe(new CommonObserver<PubNumChildBean>() {
                     @Override
-                    protected void onSuccess(KnowledgeChildBean childBeans) {
-                        if (childBeans != null) {
+                    protected void onSuccess(PubNumChildBean pubNumChildBean) {
+                        if (pubNumChildBean != null) {
                             if (refreshLayout.getState() == RefreshState.Refreshing) {
-                                mAdapter.setNewData(childBeans.getDatas());
+                                mAdapter.setNewData(pubNumChildBean.getDatas());
                                 refreshLayout.finishRefresh();
                             }//正在加载
                             else if (refreshLayout.getState() == RefreshState.Loading) {
-                                mAdapter.getData().addAll((childBeans.getDatas()));
+                                mAdapter.getData().addAll((pubNumChildBean.getDatas()));
                                 refreshLayout.finishLoadMore();
                                 mAdapter.notifyDataSetChanged();
                             } else {
-                                mAdapter.setNewData((childBeans.getDatas()));
+                                mAdapter.setNewData((pubNumChildBean.getDatas()));
                             }
                         } else {
                             if (refreshLayout.getState() == RefreshState.Refreshing) {
@@ -115,9 +113,7 @@ public class KnowledgeChildFragment extends BaseFragment {
                                 refreshLayout.finishLoadMore();
                             }
                         }
-
                     }
-
                     @Override
                     protected void onError(String errorMsg) {
 
@@ -128,8 +124,9 @@ public class KnowledgeChildFragment extends BaseFragment {
     //接收id数据 来自KnowledgeChildActivity发送
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void attendtion(AttentionEvent attentionEvent) {
-        cid = attentionEvent.getId();
-        getKnowledgeChild(0, attentionEvent.getId());
+        id = attentionEvent.getId();
+        getWxArticleList(attentionEvent.getId(), 0);
+        refreshLayout.autoRefresh();
     }
 
     @Override
@@ -137,13 +134,6 @@ public class KnowledgeChildFragment extends BaseFragment {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-    }
-
 
     @Override
     public void onPause() {

@@ -9,6 +9,8 @@ import com.example.handsomelibrary.model.BaseBean;
 import com.example.handsomelibrary.model.KnowledgeBean;
 import com.example.handsomelibrary.model.KnowledgeChildBean;
 import com.example.handsomelibrary.model.LoginBean;
+import com.example.handsomelibrary.model.PubNumChildBean;
+import com.example.handsomelibrary.model.WxArticleBean;
 
 import java.util.List;
 
@@ -57,6 +59,18 @@ public interface ApiService {
     @GET("article/list/{page}/json")
     Observable<BaseBean<KnowledgeChildBean>> getKnowledgeChild(@Path("page") int page,
                                                                @Query("cid") int cid);
+
+    /**
+     * 获取公众号列表
+     */
+    @GET("wxarticle/chapters/json")
+    Observable<BaseBean<List<WxArticleBean>>> getWxArticle();
+
+    /**
+     * 查看某个公众号历史数据
+     */
+    @GET("wxarticle/list/{id}/{page}/json")
+    Observable<BaseBean<PubNumChildBean>> getWxArticleList(@Path("id") int id, @Path("page") int page);
 
 
 

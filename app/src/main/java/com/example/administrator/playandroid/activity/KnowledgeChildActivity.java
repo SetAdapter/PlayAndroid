@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 知识体系下的文章
+ * 知识体系下 二级界面
  * Created by Stefan on 2018/11/27 15:15
  */
 
