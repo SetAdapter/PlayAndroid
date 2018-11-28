@@ -105,7 +105,7 @@ public class PublicNumberFragment extends BaseFragment implements ViewPager.OnPa
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                //发送事件数据（分类的id）至 KnowledgeChildFragment  和 PublicNumberChildFragment
+                //发送事件数据（公众号作者的id）至 PublicNumberChildFragment
                 EventBus.getDefault().post(new AttentionEvent(wxArticleBeans.get(tab.getPosition()).getId()));
             }
 

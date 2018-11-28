@@ -60,6 +60,7 @@ public class PublicNumberChildFragment extends BaseFragment {
         getWxArticleList(408,mPage);
         initRv();
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -87,6 +88,7 @@ public class PublicNumberChildFragment extends BaseFragment {
         });
     }
 
+    //网络请求 公众号列表数据
     private void getWxArticleList(int id, int page) {
         RxHttpUtils.createApi(ApiService.class)
                 .getWxArticleList(id, page)
@@ -121,7 +123,7 @@ public class PublicNumberChildFragment extends BaseFragment {
                 });
     }
 
-    //接收id数据 来自KnowledgeChildActivity发送
+    //接收id数据 来自PublicNumberFragment发送
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void attendtion(AttentionEvent attentionEvent) {
         id = attentionEvent.getId();
