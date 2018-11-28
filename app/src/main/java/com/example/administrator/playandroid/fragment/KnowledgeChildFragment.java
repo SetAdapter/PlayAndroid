@@ -10,9 +10,12 @@ import com.example.administrator.playandroid.adapter.KnowledgeChildAdapter;
 import com.example.handsomelibrary.api.ApiService;
 import com.example.handsomelibrary.base.BaseFragment;
 import com.example.handsomelibrary.interceptor.Transformer;
+import com.example.handsomelibrary.model.KnowledgeBean;
 import com.example.handsomelibrary.model.KnowledgeChildBean;
 import com.example.handsomelibrary.retrofit.RxHttpUtils;
 import com.example.handsomelibrary.retrofit.observer.CommonObserver;
+import com.example.handsomelibrary.utils.L;
+import com.example.handsomelibrary.utils.T;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
@@ -23,11 +26,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
-
-import static com.example.administrator.playandroid.activity.WebViewActivity.startWebActivity;
-
 
 /**
  * Created by Stefan on 2018/11/27 15:33
@@ -69,10 +70,6 @@ public class KnowledgeChildFragment extends BaseFragment {
         rv_knowChildList.setLayoutManager(new LinearLayoutManager(mContext));
         mAdapter = new KnowledgeChildAdapter(new ArrayList<>());
         rv_knowChildList.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            startWebActivity(mContext,mAdapter.getData().get(position).getLink());
-        });
-        //刷新与分页加载
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
@@ -143,6 +140,7 @@ public class KnowledgeChildFragment extends BaseFragment {
         super.onDestroy();
 
     }
+
 
     @Override
     public void onPause() {

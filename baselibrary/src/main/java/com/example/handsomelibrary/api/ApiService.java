@@ -52,7 +52,7 @@ public interface ApiService {
     Observable<BaseBean<List<KnowledgeBean>>> getKnowledgeTree();
 
     /**
-     * 2.2 知识体系下的文章
+     * 2.1 体系数据
      */
     @GET("article/list/{page}/json")
     Observable<BaseBean<KnowledgeChildBean>> getKnowledgeChild(@Path("page") int page,
