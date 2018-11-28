@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.playandroid.R;
+import com.example.administrator.playandroid.activity.AttentionEvent;
 import com.example.administrator.playandroid.activity.KnowledgeChildActivity;
 import com.example.administrator.playandroid.adapter.KnowledgeAdapter;
 import com.example.handsomelibrary.api.ApiService;
@@ -16,6 +17,8 @@ import com.example.handsomelibrary.model.KnowledgeBean;
 import com.example.handsomelibrary.retrofit.RxHttpUtils;
 import com.example.handsomelibrary.retrofit.observer.CommonObserver;
 import com.example.handsomelibrary.utils.JumpUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +98,7 @@ public class KnowledgeFragment extends BaseFragment{
             Bundle bundle=new Bundle();
             bundle.putSerializable("knowledgeBean",knowledgeBean);
             JumpUtils.jump(mContext,KnowledgeChildActivity.class,bundle);
+
         });
 
         //refreshLayout.setColorSchemeColors(getResources().getColor(R.color.homeMain));

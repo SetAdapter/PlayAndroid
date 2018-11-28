@@ -7,6 +7,7 @@ import com.example.handsomelibrary.model.ArticleListBean;
 import com.example.handsomelibrary.model.BannerBean;
 import com.example.handsomelibrary.model.BaseBean;
 import com.example.handsomelibrary.model.KnowledgeBean;
+import com.example.handsomelibrary.model.KnowledgeChildBean;
 import com.example.handsomelibrary.model.LoginBean;
 
 import java.util.List;
@@ -49,6 +50,21 @@ public interface ApiService {
      */
     @GET("tree/json")
     Observable<BaseBean<List<KnowledgeBean>>> getKnowledgeTree();
+
+    /**
+     * 2.1 体系数据
+     */
+    @GET("article/list/{page}/json")
+    Observable<BaseBean<KnowledgeChildBean>> getKnowledgeChild(@Path("page") int page,
+                                                               @Query("cid") int cid);
+
+
+
+
+
+
+
+
 
 
 

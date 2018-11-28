@@ -16,6 +16,10 @@ import com.example.handsomelibrary.base.BaseActivity;
 import com.example.handsomelibrary.model.KnowledgeBean;
 import com.example.handsomelibrary.utils.JumpUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -66,28 +70,28 @@ public class KnowledgeChildActivity extends BaseActivity implements ViewPager.On
                     return beanChildren.get(position).getName();
                 }
             });
+            mViewPager.setOffscreenPageLimit(4);
+            mViewPager.addOnPageChangeListener(this);
+            mTabLayout.setupWithViewPager(mViewPager);
+            //TabLayout的Tab选择监听
+            mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    //发送事件数据（分类的id）至 KnowledgeChildFragment
+                    EventBus.getDefault().post(new AttentionEvent(beanChildren.get(tab.getPosition()).getId()));
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
         }
-        mViewPager.setOffscreenPageLimit(4);
-        mViewPager.addOnPageChangeListener(this);
-        mTabLayout.setupWithViewPager(mViewPager);
-        //TabLayout的Tab选择监听
-        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
     }
 
     /**
