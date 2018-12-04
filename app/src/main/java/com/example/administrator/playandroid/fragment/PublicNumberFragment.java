@@ -6,27 +6,21 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.administrator.playandroid.R;
 import com.example.administrator.playandroid.activity.AttentionEvent;
 import com.example.handsomelibrary.api.ApiService;
 import com.example.handsomelibrary.base.BaseFragment;
 import com.example.handsomelibrary.interceptor.Transformer;
-import com.example.handsomelibrary.model.KnowledgeBean;
 import com.example.handsomelibrary.model.WxArticleBean;
 import com.example.handsomelibrary.retrofit.RxHttpUtils;
 import com.example.handsomelibrary.retrofit.observer.CommonObserver;
-import com.example.handsomelibrary.utils.JumpUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * 公众号

@@ -13,7 +13,6 @@ import com.example.handsomelibrary.api.ApiService;
 import com.example.handsomelibrary.base.BaseFragment;
 import com.example.handsomelibrary.interceptor.Transformer;
 import com.example.handsomelibrary.model.ProjectTreeBean;
-import com.example.handsomelibrary.model.WxArticleBean;
 import com.example.handsomelibrary.retrofit.RxHttpUtils;
 import com.example.handsomelibrary.retrofit.observer.CommonObserver;
 

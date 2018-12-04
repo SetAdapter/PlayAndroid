@@ -3,9 +3,7 @@ package com.example.administrator.playandroid.fragment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.playandroid.R;
 import com.example.administrator.playandroid.activity.AttentionEvent;
 import com.example.administrator.playandroid.adapter.PubNumChildAdapter;
@@ -128,7 +126,6 @@ public class PublicNumberChildFragment extends BaseFragment {
     public void attendtion(AttentionEvent attentionEvent) {
         id = attentionEvent.getId();
         getWxArticleList(attentionEvent.getId(), 0);
-        refreshLayout.autoRefresh();
     }
 
     @Override
