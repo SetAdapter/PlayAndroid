@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.SearchActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@color/homeMain">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dp_12"
+            app:srcCompat="@drawable/svg_back" />
+
+        <EditText
+            android:imeOptions="actionSearch"
+            android:id="@+id/et_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_24"
+            android:layout_toRightOf="@+id/iv_back"
+            android:background="@null"
+            android:hint="发现更多干货"
+            android:textColorHint="@color/txtSuperLight"
+            android:textSize="@dimen/dp_17" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_24"
+            app:srcCompat="@drawable/svg_search" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_hotTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_14"
+        android:text="热门搜素"
+        android:textColor="#01bcd4"
+        android:textSize="@dimen/dp_16" />
+
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:id="@+id/fl_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="@dimen/dp_24"
+        android:layout_marginBottom="10dp" />
+
+</LinearLayout>

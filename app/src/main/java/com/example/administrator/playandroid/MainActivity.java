@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.administrator.playandroid.activity.AboutUsActivity;
+import com.example.administrator.playandroid.activity.SearchActivity;
 import com.example.administrator.playandroid.fragment.HomeFragment;
 import com.example.administrator.playandroid.fragment.KnowledgeFragment;
 import com.example.administrator.playandroid.fragment.NavigationFragment;
@@ -90,7 +91,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_edit:
-                        T.showShort("Search!");
+                       JumpUtils.jump(mContext,SearchActivity.class,null);
                         break;
                 }
                 return true;

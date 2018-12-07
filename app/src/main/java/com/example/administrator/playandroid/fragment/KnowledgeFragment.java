@@ -25,7 +25,7 @@ import static com.example.administrator.playandroid.MainActivity.onScrollUp;
 
 /**
  * 知识体系
- * Crea-ted by Stefan on 2018/11/21.
+ * Created by Stefan on 2018/11/21.
  */
 public class KnowledgeFragment extends BaseFragment{
 

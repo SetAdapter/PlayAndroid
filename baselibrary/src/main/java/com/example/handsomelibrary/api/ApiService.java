@@ -12,6 +12,7 @@ import com.example.handsomelibrary.model.LoginBean;
 import com.example.handsomelibrary.model.ProjectChildBean;
 import com.example.handsomelibrary.model.ProjectTreeBean;
 import com.example.handsomelibrary.model.PubNumChildBean;
+import com.example.handsomelibrary.model.SearchBean;
 import com.example.handsomelibrary.model.WxArticleBean;
 
 import java.util.List;
@@ -88,8 +89,12 @@ public interface ApiService {
     Observable<BaseBean<ProjectChildBean>> getProjectList(@Path("page") int page,
                                                           @Query("cid") int cid);
 
-
-
+    /**
+     * 7.1 搜索
+     */
+    @POST("article/query/{page}/json")
+    Observable<BaseBean<SearchBean>> getQueryList(@Path("page") int page,
+                                                  @Query("k") String k);
 
 
 
