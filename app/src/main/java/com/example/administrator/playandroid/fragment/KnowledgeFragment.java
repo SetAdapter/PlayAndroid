@@ -3,11 +3,8 @@ package com.example.administrator.playandroid.fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.playandroid.R;
-import com.example.administrator.playandroid.activity.AttentionEvent;
 import com.example.administrator.playandroid.activity.KnowledgeChildActivity;
 import com.example.administrator.playandroid.adapter.KnowledgeAdapter;
 import com.example.handsomelibrary.api.ApiService;
@@ -17,8 +14,6 @@ import com.example.handsomelibrary.model.KnowledgeBean;
 import com.example.handsomelibrary.retrofit.RxHttpUtils;
 import com.example.handsomelibrary.retrofit.observer.CommonObserver;
 import com.example.handsomelibrary.utils.JumpUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +25,7 @@ import static com.example.administrator.playandroid.MainActivity.onScrollUp;
 
 /**
  * 知识体系
- * Created by Stefan on 2018/11/21.
+ * Crea-ted by Stefan on 2018/11/21.
  */
 public class KnowledgeFragment extends BaseFragment{
 

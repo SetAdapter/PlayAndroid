@@ -35,9 +35,9 @@ public class PublicNumberFragment extends BaseFragment implements ViewPager.OnPa
     @BindView(R.id.ViewPager)
     ViewPager mViewPager;
 
-    public static PublicNumberFragment newInstance(String parmas) {
+    public static PublicNumberFragment newInstance(String params) {
         Bundle bundle = new Bundle();
-        bundle.putString(HOME_FRAGMENT, parmas);
+        bundle.putString(HOME_FRAGMENT, params);
         PublicNumberFragment fragment = new PublicNumberFragment();
         fragment.setArguments(bundle);
         return fragment;

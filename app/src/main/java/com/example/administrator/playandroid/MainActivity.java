@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.example.administrator.playandroid.activity.AboutUsActivity;
 import com.example.administrator.playandroid.fragment.HomeFragment;
 import com.example.administrator.playandroid.fragment.KnowledgeFragment;
 import com.example.administrator.playandroid.fragment.NavigationFragment;
@@ -24,6 +25,7 @@ import com.example.administrator.playandroid.fragment.ProjectFragment;
 import com.example.administrator.playandroid.fragment.PublicNumberFragment;
 import com.example.handsomelibrary.base.BaseActivity;
 import com.example.handsomelibrary.base.BaseFragment;
+import com.example.handsomelibrary.utils.JumpUtils;
 import com.example.handsomelibrary.utils.T;
 
 import java.util.ArrayList;
@@ -113,7 +115,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 T.showShort("设置");
                 break;
             case R.id.tv_about:
-                T.showShort("关于我们");
+                JumpUtils.jump(mContext,AboutUsActivity.class,null);
                 break;
         }
     }

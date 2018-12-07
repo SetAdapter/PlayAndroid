@@ -4,12 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.example.administrator.playandroid.R;
 import com.example.administrator.playandroid.activity.WebViewActivity;

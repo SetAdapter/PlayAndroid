@@ -77,7 +77,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.WebViewActivity" />
-        <activity android:name=".activity.KnowledgeChildActivity"></activity>
+        <activity android:name=".activity.KnowledgeChildActivity" />
+        <activity android:name=".activity.AboutUsActivity"></activity>
     </application>
 
 </manifest>

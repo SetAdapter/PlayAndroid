@@ -13,9 +13,9 @@ public class NavigationFragment extends BaseFragment{
 
     private static final String HOME_FRAGMENT = "home";
 
-    public static NavigationFragment newInstance(String parmas){
+    public static NavigationFragment newInstance(String params){
         Bundle bundle=new Bundle();
-        bundle.putString(HOME_FRAGMENT,parmas);
+        bundle.putString(HOME_FRAGMENT,params);
         NavigationFragment fragment=new NavigationFragment();
         fragment.setArguments(bundle);
         return fragment;

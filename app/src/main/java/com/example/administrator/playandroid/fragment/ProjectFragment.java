@@ -34,9 +34,9 @@ public class ProjectFragment extends BaseFragment implements ViewPager.OnPageCha
     @BindView(R.id.ViewPager)
     ViewPager mViewPager;
 
-    public static ProjectFragment newInstance(String parmas){
+    public static ProjectFragment newInstance(String params){
         Bundle bundle=new Bundle();
-        bundle.putString(HOME_FRAGMENT,parmas);
+        bundle.putString(HOME_FRAGMENT,params);
         ProjectFragment fragment=new ProjectFragment();
         fragment.setArguments(bundle);
         return fragment;

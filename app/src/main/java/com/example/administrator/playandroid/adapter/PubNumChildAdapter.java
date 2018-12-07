@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.playandroid.R;
-import com.example.handsomelibrary.model.KnowledgeChildBean;
 import com.example.handsomelibrary.model.PubNumChildBean;
 
 import java.util.List;
