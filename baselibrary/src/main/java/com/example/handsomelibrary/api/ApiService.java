@@ -9,6 +9,7 @@ import com.example.handsomelibrary.model.BaseBean;
 import com.example.handsomelibrary.model.KnowledgeBean;
 import com.example.handsomelibrary.model.KnowledgeChildBean;
 import com.example.handsomelibrary.model.LoginBean;
+import com.example.handsomelibrary.model.NavigationBean;
 import com.example.handsomelibrary.model.ProjectChildBean;
 import com.example.handsomelibrary.model.ProjectTreeBean;
 import com.example.handsomelibrary.model.PubNumChildBean;
@@ -97,8 +98,11 @@ public interface ApiService {
                                                   @Query("k") String k);
 
 
-
-
+    /**
+     * 3.1 导航数据
+     */
+    @GET("navi/json")
+    Observable<BaseBean<List<NavigationBean>>> getNavigationList();
 
 
 

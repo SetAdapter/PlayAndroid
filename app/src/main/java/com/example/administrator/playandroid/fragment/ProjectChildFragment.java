@@ -5,6 +5,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.playandroid.R;
 import com.example.administrator.playandroid.activity.AttentionEvent;
 import com.example.administrator.playandroid.adapter.ProjectChildAdapter;
@@ -72,6 +73,8 @@ public class ProjectChildFragment extends BaseFragment {
         rv_ChildList.addItemDecoration(new DividerItemDecoration(mContext,DividerItemDecoration.VERTICAL));
         mAdapter = new ProjectChildAdapter(new ArrayList<>());
         rv_ChildList.setAdapter(mAdapter);
+        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);//item加载动画
+        mAdapter.isFirstOnly(false);//动画默认只执行一次,如果想重复执行可设置
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             startWebActivity(mContext,mAdapter.getData().get(position).getLink());
         });
