@@ -1,10 +1,7 @@
 package com.example.administrator.playandroid.adapter;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.shapes.Shape;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseSectionQuickAdapter;
@@ -18,7 +15,6 @@ import java.util.Random;
  * Created by Stefan on 2018/12/11 10:14
  */
 public class NavigationRightAdapter extends BaseSectionQuickAdapter<NavigationBeanSection, BaseViewHolder> {
-
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
      * some initialization data.
@@ -31,22 +27,22 @@ public class NavigationRightAdapter extends BaseSectionQuickAdapter<NavigationBe
 
     @Override
     protected void convertHead(BaseViewHolder helper, NavigationBeanSection item) {
-        helper.setText(R.id.tv_header, item.header);
+        helper.setText(R.id.tv_header, item.header).addOnClickListener(R.id.tv_header);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, NavigationBeanSection item) {
         TextView tv_label = helper.getView(R.id.tv_label);
         tv_label.setText(item.t.getTitle());
+        //helper.addOnClickListener(R.id.tv_label);
         //随机颜色
         Random myRandom = new Random();
         int ranColor = 0xff000000 | myRandom.nextInt(0x00ffffff);
         helper.setTextColor(R.id.tv_label, ranColor);
         GradientDrawable drawable = new GradientDrawable();
-        drawable.setCornerRadius(5);
-        
-        drawable.setStroke(1, Color.parseColor("#cccccc"));
-        drawable.setColor(Color.parseColor("#eeeeee"));
+        drawable.setCornerRadius(8);
+        drawable.setStroke(1, ranColor);
+        drawable.setColor(Color.parseColor("#FFFFFF"));
         tv_label.setBackgroundDrawable(drawable);
 
     }

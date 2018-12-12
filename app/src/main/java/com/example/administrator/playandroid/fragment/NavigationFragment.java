@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.playandroid.R;
+import com.example.administrator.playandroid.activity.WebViewActivity;
 import com.example.administrator.playandroid.adapter.NavigationBeanSection;
 import com.example.administrator.playandroid.adapter.NavigationLeftAdapter;
 import com.example.administrator.playandroid.adapter.NavigationRightAdapter;
@@ -43,6 +44,7 @@ public class NavigationFragment extends BaseFragment {
 
     NavigationRightAdapter rightAdapter;
 
+    List<NavigationBean> beans=new ArrayList<>();
     public static NavigationFragment newInstance(String params) {
         Bundle bundle = new Bundle();
         bundle.putString(HOME_FRAGMENT, params);
@@ -67,11 +69,6 @@ public class NavigationFragment extends BaseFragment {
         rv_left.setLayoutManager(new LinearLayoutManager(mContext));
         leftAdapter = new NavigationLeftAdapter(new ArrayList<>());
         rv_left.setAdapter(leftAdapter);
-        //右边栏
-        rv_right.setLayoutManager(new GridLayoutManager(mContext ,2));
-        rightAdapter=new NavigationRightAdapter(new ArrayList<>());
-        rv_right.setAdapter(rightAdapter);
-
         leftAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             switch (view.getId()) {
                 case R.id.rb_left:
@@ -79,6 +76,13 @@ public class NavigationFragment extends BaseFragment {
                     leftAdapter.notifyDataSetChanged();
                     break;
             }
+        });
+        //右边栏
+        rv_right.setLayoutManager(new GridLayoutManager(mContext ,2));
+        rightAdapter=new NavigationRightAdapter(new ArrayList<>());
+        rv_right.setAdapter(rightAdapter);
+        rightAdapter.setOnItemClickListener((adapter, view, position) -> {
+            WebViewActivity.startWebActivity(mContext,rightAdapter.getData().get(position).t.getLink());
         });
     }
 
@@ -90,9 +94,10 @@ public class NavigationFragment extends BaseFragment {
                     @Override
                     protected void onSuccess(List<NavigationBean> navigationBeans) {
                         if(navigationBeans!=null){
+                            beans=navigationBeans;
                             leftAdapter.setNewData(navigationBeans);
                             //添加右边分组数据
-                            List<NavigationBeanSection> sections=new ArrayList<>();
+                            List<NavigationBeanSection> sections = new ArrayList<>();
                             for (NavigationBean beans: navigationBeans) {
                                 if(!TextUtils.isEmpty(beans.getName())){
                                     sections.add(new NavigationBeanSection(true,beans.getName()));//头部数据
