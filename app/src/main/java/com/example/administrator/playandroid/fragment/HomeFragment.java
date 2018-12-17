@@ -81,7 +81,7 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
         //列表数据
         getArticleList(mPageNo);
         rv_main.setLayoutManager(new LinearLayoutManager(mContext));
-        mAdapter = new HomeAdapter(new ArrayList<ArticleListBean.DatasBean>());
+        mAdapter = new HomeAdapter(new ArrayList<>());
         rv_main.setAdapter(mAdapter);
         // rv_main.addOnScrollListener(new FabScrollListener(this));
         setRvScroll();
@@ -156,6 +156,7 @@ public class HomeFragment extends BaseFragment implements OnRefreshLoadMoreListe
                 //设置点击监听事件
                 .setOnItemClickListener(position -> {
                     // todo 点击 轮播图跳转到指定界面
+                    WebViewActivity.startWebActivity(mContext,bannerBean.get(position).getUrl());
                 })
                 //设置手动影响（设置了该项无法手动切换）
                 .setManualPageable(true);

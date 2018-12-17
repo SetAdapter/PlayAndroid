@@ -5,11 +5,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.playandroid.R;
-import com.example.administrator.playandroid.activity.WebViewActivity;
 import com.example.administrator.playandroid.adapter.NavigationBeanSection;
 import com.example.administrator.playandroid.adapter.NavigationLeftAdapter;
 import com.example.administrator.playandroid.adapter.NavigationRightAdapter;
@@ -17,15 +14,15 @@ import com.example.handsomelibrary.api.ApiService;
 import com.example.handsomelibrary.base.BaseFragment;
 import com.example.handsomelibrary.interceptor.Transformer;
 import com.example.handsomelibrary.model.NavigationBean;
-import com.example.handsomelibrary.model.ProjectTreeBean;
 import com.example.handsomelibrary.retrofit.RxHttpUtils;
 import com.example.handsomelibrary.retrofit.observer.CommonObserver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
+
+import static com.example.administrator.playandroid.activity.WebViewActivity.startWebActivity;
 
 /**
  * 导航
@@ -82,7 +79,7 @@ public class NavigationFragment extends BaseFragment {
         rightAdapter=new NavigationRightAdapter(new ArrayList<>());
         rv_right.setAdapter(rightAdapter);
         rightAdapter.setOnItemClickListener((adapter, view, position) -> {
-            WebViewActivity.startWebActivity(mContext,rightAdapter.getData().get(position).t.getLink());
+            startWebActivity(mContext,rightAdapter.getData().get(position).t.getLink());
         });
     }
 
