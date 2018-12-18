@@ -2,6 +2,7 @@ package com.example.administrator.playandroid.adapter;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseSectionQuickAdapter;
@@ -42,7 +43,9 @@ public class NavigationRightAdapter extends BaseSectionQuickAdapter<NavigationBe
         GradientDrawable drawable = new GradientDrawable();
         drawable.setCornerRadius(8);
         drawable.setStroke(1, ranColor);
-        drawable.setColor(Color.parseColor("#FFFFFF"));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            drawable.setColor(mContext.getColor(R.color.bgColor));
+        }
         tv_label.setBackgroundDrawable(drawable);
 
     }

@@ -2,7 +2,9 @@ package com.example.handsomelibrary.application;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.util.DisplayMetrics;
 
 import com.example.handsomelibrary.R;
 import com.example.handsomelibrary.retrofit.RxHttpUtils;
@@ -49,6 +51,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        init(this);
         mApplication = this;
         Map<String, Object> headerMaps = new HashMap<>();
 //        headerMaps.put("token", SpfUtils.getSpfSaveStr(Constant.token));
@@ -93,6 +96,24 @@ public class BaseApplication extends Application {
                 return new ClassicsFooter(context).setDrawableSize(20);
             }
         });
+    }
+
+
+    private static Resources sRes;
+
+    public static void init(Context context) {
+        sRes = context.getResources();
+    }
+    /**
+     * 切换 夜间模式
+     * @param on true 夜间， false  日间
+     */
+    public static void updateNightMode(boolean on) {
+        DisplayMetrics dm = sRes.getDisplayMetrics();
+        Configuration config = sRes.getConfiguration();
+        config.uiMode &= ~Configuration.UI_MODE_NIGHT_MASK;
+        config.uiMode |= on ? Configuration.UI_MODE_NIGHT_YES : Configuration.UI_MODE_NIGHT_NO;
+        sRes.updateConfiguration(config, dm);
     }
 
 }

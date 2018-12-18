@@ -3,18 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mDrawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bg">
 
     <!--主布局-->
     <RelativeLayout
         android:id="@+id/fl_fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/bg">
 
         <com.ashokvarma.bottomnavigation.BottomNavigationBar
             android:id="@+id/bottom_navigation_bar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:background="@color/bg"
             android:layout_alignParentBottom="true" />
     </RelativeLayout>
     <!--侧滑菜单-->
@@ -22,7 +25,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/white"
+        android:background="@color/bg"
         android:orientation="vertical">
 
         <RelativeLayout

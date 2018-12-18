@@ -1,5 +1,7 @@
 package com.example.administrator.playandroid;
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,9 +27,11 @@ import com.example.administrator.playandroid.fragment.KnowledgeFragment;
 import com.example.administrator.playandroid.fragment.NavigationFragment;
 import com.example.administrator.playandroid.fragment.ProjectFragment;
 import com.example.administrator.playandroid.fragment.PublicNumberFragment;
+import com.example.handsomelibrary.application.BaseApplication;
 import com.example.handsomelibrary.base.BaseActivity;
 import com.example.handsomelibrary.base.BaseFragment;
 import com.example.handsomelibrary.utils.JumpUtils;
+import com.example.handsomelibrary.utils.SpfUtils;
 import com.example.handsomelibrary.utils.T;
 
 import java.util.ArrayList;
@@ -52,6 +57,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     private ActionBarDrawerToggle mDrawerToggle;
     private List<BaseFragment> mFragments = new ArrayList<>();
+
 
     @Override
     protected int getContentView() {
@@ -91,14 +97,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_edit:
-                       JumpUtils.jump(mContext,SearchActivity.class,null);
+                        JumpUtils.jump(mContext, SearchActivity.class, null);
                         break;
                 }
                 return true;
             }
         });
-
     }
+
+    private boolean isNight = true;
 
     @OnClick({R.id.tv_collection, R.id.tv_todo, R.id.tv_nightMode, R.id.tv_setting, R.id.tv_about})
     public void onClick(View view) {
@@ -110,13 +117,27 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 T.showShort("TODO工具");
                 break;
             case R.id.tv_nightMode:
-                T.showShort("夜间模式");
+                //  获取当前模式
+                int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                //  将是否为夜间模式保存到SharedPreferences
+                SpfUtils.saveBooleanToSpf("isNight", currentNightMode == Configuration.UI_MODE_NIGHT_NO);
+                //  切换模式
+                getDelegate().setDefaultNightMode(currentNightMode == Configuration.UI_MODE_NIGHT_NO ?
+                        AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+                isNight = !SpfUtils.getSpfSaveBoolean("isNight");//从SP中取反值 用于变换模式
+                BaseApplication.updateNightMode(isNight);
+
+                //recreate();// 会有闪屏，可以使用下面的方法
+                finish();
+                startActivity(new Intent(this, this.getClass()));
+                overridePendingTransition(com.example.handsomelibrary.R.anim.anim_slide_left_in,
+                        com.example.handsomelibrary.R.anim.anim_slide_left_out);
                 break;
             case R.id.tv_setting:
                 T.showShort("设置");
                 break;
             case R.id.tv_about:
-                JumpUtils.jump(mContext,AboutUsActivity.class,null);
+                JumpUtils.jump(mContext, AboutUsActivity.class, null);
                 break;
         }
     }
@@ -146,8 +167,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     private void initBottomNavigation() {
-        mBottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
-        mBottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+        mBottomNavigationBar.setMode(BottomNavigationBar.MODE_SHIFTING);
+//        mBottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
         mBottomNavigationBar.
                 addItem(new BottomNavigationItem(R.drawable.svg_home_n, getString(R.string.home)))
                 .setActiveColor(R.color.homeMain)

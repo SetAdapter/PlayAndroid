@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#34464e</color>
+    <color name="bg">#666666</color>
+    <color name="colorPinkPrimary">#34464e</color>
+    <!-- 界面字体颜色 浅色-->
+    <color name="txtSecondColor">#b3b3b3</color>
+    <!-- 界面字体颜色 深色-->
+    <color name="txtSuperColor">#999999</color>
+    <!--首页-->
+    <color name="homeMain">#34464e</color>
+
+    <!-- UI设计原色之 黑色 -->
+    <color name="black">#b3b3b3</color>
+
+    <!--标签-->
+    <color name="label">#b3b3b3</color>
+
+    <color name="bgColor">#b3b3b3</color>
+</resources>

@@ -9,4 +9,6 @@
     <!--标签-->
     <color name="label">#01bcd4</color>
 
+    <color name="bg">#ffffff</color>
+
 </resources>
